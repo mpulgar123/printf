@@ -5,32 +5,42 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpulgar- <mpulgar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/16 13:42:09 by mpulgar-          #+#    #+#             */
-/*   Updated: 2025/05/16 19:53:14 by mpulgar-         ###   ########.fr       */
+/*   Created: 2025/05/28 19:21:36 by mpulgar-          #+#    #+#             */
+/*   Updated: 2025/05/28 19:53:38 by mpulgar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdarg.h>
+#include <stdio.h>
 #include <unistd.h>
 
-int ft_printf(char const *format, ...)
+int	ft_printf(char *format, ...)
 {
-	int i;
-	int count;
-	
+	va_list	args;
+	int		i;
+	int		count;
+
 	i = 0;
 	count = 0;
-	while(format[i])
+	va_start(args, format);
+	while (format[i] != '\0')
 	{
-		count += write(1, &format[i], 1);	
+		if (format[i] == '%')
+		{
+			i++;
+			if (format[i] == 'c')
+				count = putchar(va_arg(args, int)) + count;
+		}
+		else
+			write(1, &format[i], 1);
 		i++;
 	}
-	
-	return(count);
+	va_end(args);
+	return (count);
 }
 
-int main(void)
+int	main(void)
 {
-	char const format[] = "hola mundo %c soy  yo %i";
-	ft_printf("gabriel esta rojo");
-	return(0);
+	int	a = 'm';
+	ft_printf("hola %c", a);
 }
