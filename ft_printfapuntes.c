@@ -6,14 +6,15 @@
 /*   By: mpulgar- <mpulgar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:42:09 by mpulgar-          #+#    #+#             */
-/*   Updated: 2025/05/29 17:48:24 by mpulgar-         ###   ########.fr       */
+/*   Updated: 2025/06/04 17:44:47 by mpulgar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdarg.h>
 
-int ft_printf(char const *format, ...)
+int ft_printf(char const *format, ...) //format es el puntero a un acadena dde caraceres que contiene el texto que quieeres imprimir
+//printf("hola %s", nombre) es lo que esta en ""
 {
 	va_list vargs; //variable para manejar los argumentos variables
 	int i; //recorrer los formatos
@@ -33,14 +34,19 @@ int ft_printf(char const *format, ...)
 			//if (format[i] == 'i' || format[i] == 'd') así con todas
 			
 		}// acumulador_ acumula un valor  y lo va guardadnod en diferentes lonitudes
+		//es + 1 en count porque acumua la canntidad que imprime. no importa nada la primera vez porque es mas 0 , pero lluego llos vallore suman y es importante suma rlo que tenias con la cantdad que etsas mprimiendo
 		
 		count += write(1, &format[i], 1);	
 		i++;
 	}
+	else
+	count = write(1, &format[i], 1) + count; // tambine debo acumullar los carcateres que imprime que n son ninguno de estos que me piden
 	
 	va_end(vargs); //ya no voy a usar estos cajones. limpia al final el que?? las cajotas?
 	return(count);
 }
+
+FUNCIONES POR SEPARADO
 
 int printchar(char c)
 {
@@ -59,16 +65,17 @@ int printptr( void *ptr)
 		return(write(1, "(nil)", 5));
 	count = write(1, "0x", 2);
 }
-int printhex(unsigned long i)
+int printhex(unsigned long i) //asi asegurass que no tiene signo y es llong para que no t epreocupes por desboradamienot 
 {
-	char c;
+	char c; // ara imprimir numeor uno por uno
 	int count;
-	char	*base; // un array con los caracteres que uede iprimmir
+	char	*base; //un array con los caracteres que puede iprimmir
 
 	count = 0;
-	base = "0123456789abcdef"; 
-	if (i >= 10)
-		count = printhex(i / 16) + count;
+	base = "0123456789abcdef"; //puntero con los caracteres psibles emhexa decimal. ej: bas[10] : a.
+	if (i >= 10) //Si el número es mayor o igual a 10 
+		count = printhex(i / 16) + count;// (es decir, tiene más de un dígito en hexadecimal), haces una llamada recursiva a `printhex(i / 16)`
+		// recursiva para imprimir los digitos de izuierda a derecha
 	c = base[i % 16]; // los [] representa la poscion de base que vas a printear
 	count = write(1, &c, 1) + count;
 	return(count);	

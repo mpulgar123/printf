@@ -6,7 +6,7 @@
 /*   By: mpulgar- <mpulgar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:21:36 by mpulgar-          #+#    #+#             */
-/*   Updated: 2025/05/29 18:12:43 by mpulgar-         ###   ########.fr       */
+/*   Updated: 2025/06/04 18:15:34 by mpulgar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <unistd.h>
 #include "ft_printf.h"
 
-int	ft_printf(char *format, ...)
+int	ft_printf(char const *format, ...)
 {
 	va_list	args;
 	int		i;
@@ -37,9 +37,15 @@ int	ft_printf(char *format, ...)
 				count = printptr(va_arg(args, void*)) + count;
 			if (format[i] == 'd' || format[i] == 'i')
 				count = print10(va_arg(args, int)) + count;
+			if (format[i] == '%')
+				count = write(1, "%", 1) + count;
+			if (format[i] == 'x')
+				count += printhex(va_arg(args, long), 'x');
+			if (format[i] == 'X')
+				count += printhex(va_arg(args, long), 'X');
 		}
 		else
-			write(1, &format[i], 1);
+			count = write(1, &format[i], 1) + count;
 		i++;
 	}
 	va_end(args);
@@ -51,3 +57,5 @@ int	ft_printf(char *format, ...)
 	// int	a = 'm';
 	// ft_printf("hola %c", a);
 // }
+//write(1, '%', 1);
+//count = 1 + count;

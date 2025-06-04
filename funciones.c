@@ -52,24 +52,55 @@ int printptr(void *ptr)
 	if(ptr == NULL)
 		return(write(1, "(nil)", 5));
 	count = write(1, "0x", 2) + count;
-	count = printhex((unsigned long) ptr) + count;
+	count = printhex((unsigned long) ptr, 'p') + count;
 	return(count);
 }
-int printhex(unsigned long i)
+int printhex(unsigned long i, char b)
 {
 	char c;
 	int count;
-	char	*base; // un array con los caracteres que uede iprimmir
+	char	*base; 
+
+	count = 0; 
+	if (b == 'X')
+		base = "0123456789ABCDEF"; 
+	else
+		base = "0123456789abcdef";	
+	if (i >= 16)
+		count = printhex(i / 16, b) + count;
+	c = base[i % 16];
+	count = write(1, &c, 1) + count;
+	return(count);
+}
+int printdec(int num)
+{
+	int i;
+	int count;
+	char c;
 
 	count = 0;
-	base = "0123456789abcdef"; 
-	if (i >= 10)
-		count = printhex(i / 16) + count;
-	c = base[i % 16]; // los [] representa la poscion de base que vas a printear
-	count = write(1, &c, 1) + count;
-	return(count);	
+	i = 0;
+	
+	if (num[i] == ',')
+
+	if (num >= 10)
+	printdec(num / 10);
+	c = write(1, &c, 1);
+
+	
 }
 
+// int printhexminman(int i)
+// {
+// 
+// }
+
+// int printper(int c)
+// {
+	// int count;
+	// count = write(1, &c, 1); //pasar a char con + 0 ?
+	// return (count);
+// }
 
 
 
