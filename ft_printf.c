@@ -6,7 +6,7 @@
 /*   By: mpulgar- <mpulgar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 19:21:36 by mpulgar-          #+#    #+#             */
-/*   Updated: 2025/06/04 18:15:34 by mpulgar-         ###   ########.fr       */
+/*   Updated: 2025/06/05 20:54:09 by mpulgar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,11 @@ int	ft_printf(char const *format, ...)
 			if (format[i] == '%')
 				count = write(1, "%", 1) + count;
 			if (format[i] == 'x')
-				count += printhex(va_arg(args, long), 'x');
+				count += printhex((unsigned long)va_arg(args, unsigned int), 'x');
 			if (format[i] == 'X')
-				count += printhex(va_arg(args, long), 'X');
+				count += printhex((unsigned long)va_arg(args, unsigned int), 'X');
+			if (format[i] == 'u')
+				count += printunsigned(va_arg(args, unsigned int));
 		}
 		else
 			count = write(1, &format[i], 1) + count;
